@@ -1,0 +1,104 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with TimescaleDB
+  tracking_data_db:
+    image: timescale/timescaledb:latest-pg15
+    container_name: tracking_data_db
+    environment:
+      POSTGRES_DB: tracking_data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./database/data:/var/lib/postgresql/data
+      - ./database/init:/docker-entrypoint-initdb.d
+      - ./database/scripts:/scripts
+    networks:
+      - tracking_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tracking_data"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # Redis for caching
+  tracking_data_redis:
+    image: redis:7-alpine
+    container_name: tracking_data_redis
+    ports:
+      - "6379:6379"
+    networks:
+      - tracking_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # FastAPI Application (Main API with Database)
+  tracking_data_api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: tracking_data_api
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres123@tracking_data_db:5432/tracking_data
+      - REDIS_URL=redis://tracking_data_redis:6379
+      - PYTHONPATH=/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      tracking_data_db:
+        condition: service_healthy
+      tracking_data_redis:
+        condition: service_healthy
+    networks:
+      - tracking_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+  # SSI Direct API Proxy (No Database Storage)
+  tracking_data_ssi_proxy:
+    build:
+      context: ./api
+      dockerfile: Dockerfile.proxy
+    container_name: tracking_data_ssi_proxy
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres123@tracking_data_db:5432/tracking_data
+      - REDIS_URL=redis://tracking_data_redis:6379
+      - PYTHONPATH=/app
+    ports:
+      - "8001:8001"
+    depends_on:
+      tracking_data_db:
+        condition: service_healthy
+      tracking_data_redis:
+        condition: service_healthy
+    networks:
+      - tracking_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+
+networks:
+  tracking_network:
+    name: tracking_data_network
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local

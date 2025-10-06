@@ -1,0 +1,37 @@
+{
+    "1": {
+        "url": "https://iboard-api.ssi.com.vn/statistics/company/ssmi/stock-info?symbol=ACB&page=1&pageSize=100&fromDate=01%2F01%2F2010&toDate=05%2F10%2F2025",
+        "description": "API lấy thông tin chi tiết về cổ phiếu và công ty",
+        "purpose": "Thu thập dữ liệu thống kê về cổ phiếu ACB từ năm 2010 đến hiện tại",
+        "method": "GET",
+        "parameters": {
+            "symbol": "ACB - Mã cổ phiếu Ngân hàng TMCP Á Châu",
+            "page": "1 - Trang đầu tiên",
+            "pageSize": "100 - Hiển thị 100 kết quả mỗi trang",
+            "fromDate": "01/01/2010 - Ngày bắt đầu từ năm 2010",
+            "toDate": "05/10/2025 - Ngày kết thúc hiện tại"
+        },
+        "use_case": "Theo dõi thông tin cổ phiếu, tạo báo cáo thống kê, phân tích hoạt động công ty từ dữ liệu lịch sử"
+    },
+    "2": {
+        "url": "https://iboard-api.ssi.com.vn/statistics/charts/history?resolution=1&symbol=PDR&from=1757058843&to=1759564443",
+        "description": "API lấy dữ liệu lịch sử giá cổ phiếu dạng biểu đồ",
+        "purpose": "Thu thập dữ liệu OHLC (Open, High, Low, Close) của cổ phiếu PDR để vẽ biểu đồ",
+        "method": "GET",
+        "parameters": {
+            "resolution": "1 - Độ phân giải thời gian (1 phút/giờ/ngày)",
+            "symbol": "PDR - Mã cổ phiếu Công ty Cổ phần Phát triển Bất động sản Phát Đạt",
+            "from": "1757058843 - Timestamp Unix bắt đầu",
+            "to": "1759564443 - Timestamp Unix kết thúc"
+        },
+        "use_case": "Vẽ biểu đồ candlestick, phân tích kỹ thuật, theo dõi xu hướng giá cổ phiếu"
+    },
+    "3": {
+        "url": "https://iboard-query.ssi.com.vn/stock/group/VN100",
+        "description": "API lấy thông tin về nhóm cổ phiếu VN100",
+        "purpose": "Thu thập danh sách và thông tin về 100 cổ phiếu có giá trị vốn hóa lớn nhất và thanh khoản tốt nhất Việt Nam",
+        "method": "GET",
+        "parameters": "Không cần tham số - lấy toàn bộ thông tin VN100",
+        "use_case": "Theo dõi chỉ số VN100, phân tích thị trường chứng khoán Việt Nam, đầu tư vào cổ phiếu blue-chip"
+    }
+}

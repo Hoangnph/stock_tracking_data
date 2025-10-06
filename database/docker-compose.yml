@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  tracking_data_db:
+    image: timescale/timescaledb:latest-pg15
+    container_name: tracking_data
+    environment:
+      POSTGRES_DB: tracking_data
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+      - ./scripts:/scripts
+    networks:
+      - tracking_network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tracking_data"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: tracking_data_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis_data:/data
+    networks:
+      - tracking_network
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+networks:
+  tracking_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
