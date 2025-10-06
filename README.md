@@ -7,15 +7,26 @@ Hệ thống theo dõi dữ liệu chứng khoán từ SSI APIs với khả năn
 - **📊 Thu thập dữ liệu**: Tự động lấy dữ liệu từ 3 SSI APIs
 - **🗄️ Lưu trữ dữ liệu**: PostgreSQL + TimescaleDB cho dữ liệu time-series
 - **🔗 Dual API System**: Main API (database) + SSI Proxy API (real-time)
-- **🤖 VN100 Automation**: Tự động cập nhật dữ liệu VN100
+- **🤖 VN100 Automation**: Tự động cập nhật dữ liệu VN100 với incremental logic
 - **📈 100% Field Coverage**: Lưu trữ tất cả 112 trường dữ liệu
 - **🐳 Dockerized**: Triển khai dễ dàng với Docker Compose
+- **⏰ Smart Date Logic**: Logic thời gian thông minh với GMT+7 timezone
 
 ## 🚀 Quick Start
 
 ### 1. Khởi động hệ thống
 ```bash
 ./ssi_system_manager.sh start
+```
+
+### 2. Chạy automation VN100
+```bash
+python automation/automation_vn100_direct.py --max-symbols 5
+```
+
+### 3. Kiểm tra API
+```bash
+curl http://localhost:8000/health
 ```
 
 ### 2. Kiểm tra trạng thái

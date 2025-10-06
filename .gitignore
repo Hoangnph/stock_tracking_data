@@ -74,3 +74,15 @@ htmlcov/
 # Backup files
 *.bak
 *.backup
+
+# Test files (temporary)
+test/test_trading_day_*.py
+test/test_fixed_end_date.py
+test/test_pipeline_*.py
+
+# Automation logs
+automation_*.log
+pipeline_*.log
+
+# Docker volumes
+docker-compose.override.yml
