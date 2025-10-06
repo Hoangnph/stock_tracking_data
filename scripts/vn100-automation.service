@@ -1,0 +1,28 @@
+[Unit]
+Description=Daily VN100 Stock Data Automation Service
+After=network.target docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+User=macintoshhd
+Group=staff
+WorkingDirectory=/Users/macintoshhd/Project/Project/stock_playing/tracking_data
+ExecStart=/Users/macintoshhd/Project/Project/stock_playing/tracking_data/scripts/daily_automation.sh
+StandardOutput=journal
+StandardError=journal
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+Environment=PYTHONPATH=/Users/macintoshhd/Project/Project/stock_playing/tracking_data
+
+# Restart policy
+Restart=no
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/Users/macintoshhd/Project/Project/stock_playing/tracking_data
+
+[Install]
+WantedBy=multi-user.target

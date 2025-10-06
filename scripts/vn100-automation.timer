@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily VN100 Stock Data Automation Timer
+Requires=vn100-automation.service
+
+[Timer]
+# Run daily at 17:00 (5:00 PM)
+OnCalendar=*-*-* 17:00:00
+Persistent=true
+AccuracySec=1min
+
+[Install]
+WantedBy=timers.target
