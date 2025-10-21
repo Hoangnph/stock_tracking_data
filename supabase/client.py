@@ -19,7 +19,7 @@ except ImportError:
     print("Error: supabase-py not installed. Run: pip install supabase")
     raise
 
-from supabase_config import SupabaseConfig, TableNames, DatabaseSchema, BatchConfig
+from .config import SupabaseConfig, TableNames, DatabaseSchema, BatchConfig
 
 # Setup logging
 logging.basicConfig(level=logging.INFO)
