@@ -43,6 +43,18 @@ curl http://localhost:8000/health
 ./automation_manager.sh test-small
 ```
 
+### 5. Xuất dữ liệu OHLCV
+```bash
+# Xuất dữ liệu DIG từ 2020-01-01 đến hôm nay
+python3 scripts/export_ssi_automation_style.py --symbol DIG --start 2020-01-01 --end $(date +%F)
+
+# Xuất dữ liệu PDR từ 2020-01-01 đến hôm nay  
+python3 scripts/export_ssi_automation_style.py --symbol PDR --start 2020-01-01 --end $(date +%F)
+
+# Xuất dữ liệu CII từ 2020-01-01 đến hôm nay
+python3 scripts/export_ssi_automation_style.py --symbol CII --start 2020-01-01 --end $(date +%F)
+```
+
 ## 📁 Cấu trúc Project
 
 ```
@@ -58,6 +70,13 @@ tracking_data/
 │   └── scripts/              # Database management
 ├── 📁 pipeline/              # Data pipeline
 │   └── ssi_pipeline_extended.py
+├── 📁 scripts/               # Management & export scripts
+│   ├── daily_automation.sh   # Daily automation script
+│   ├── automation_service_manager.sh  # Service management
+│   ├── vn100-automation.service # Systemd service
+│   ├── vn100-automation.timer   # Systemd timer
+│   ├── export_ssi_automation_style.py # OHLCV data export script
+│   └── fetch_ssi_ohlcv.py     # Legacy OHLCV export script
 ├── 📁 test/                  # Test files
 ├── 📁 docs/                  # Comprehensive documentation
 ├── 📁 ssi_url/               # SSI API configuration
